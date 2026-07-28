@@ -1,0 +1,30 @@
+{
+  "name": "cubex-fitness",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "tinacms build && astro check && astro build",
+    "check": "astro check",
+    "preview": "astro preview",
+    "tina": "tinacms dev -c \"astro dev\""
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^8.0.0",
+    "@aws-sdk/client-s3": "^3.800.0",
+    "@aws-sdk/s3-request-presigner": "^3.800.0",
+    "@supabase/supabase-js": "^2.50.0",
+    "astro": "^5.9.0",
+    "nodemailer": "^7.0.0",
+    "tinacms": "^2.7.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tinacms/cli": "^2.5.6",
+    "@types/node": "^22.15.0",
+    "@types/nodemailer": "^6.4.17",
+    "typescript": "^5.8.0"
+  }
+}

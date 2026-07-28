@@ -1,0 +1,5 @@
+---
+import { getEntry, render } from 'astro:content'; import Base from '../../layouts/Base.astro'; import Hero from '../../components/Hero.astro';
+const article = await getEntry('articles', Astro.params.slug!); if (!article) return new Response(null, { status: 404 }); const { Content } = await render(article);
+---
+<Base title={article.data.seoTitle || `${article.data.title} | CUBEX`} description={article.data.seoDescription || article.data.excerpt} image={article.data.image}><Hero eyebrow={`${article.data.category} · ${article.data.date.toLocaleDateString('en-CA')} · ${article.data.readTime}`} title={article.data.title} description={article.data.excerpt} /><section class="section"><article class="container detail"><img src={article.data.image} alt={article.data.title} /><Content /><h2>Discuss Your Project</h2><p>Contact CUBEX for product, engineering, quality or China sourcing support.</p><a class="btn btn-primary" href="/contact">Contact CUBEX</a></article></section></Base>

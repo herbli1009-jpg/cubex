@@ -1,0 +1,5 @@
+---
+import { getEntry } from 'astro:content'; import Base from '../layouts/Base.astro'; import Hero from '../components/Hero.astro'; import FeatureGrid from '../components/FeatureGrid.astro';
+const page = await getEntry('pages', Astro.params.service!); if (!page) return new Response(null, { status: 404 });
+---
+<Base title={`${page.data.title} | CUBEX`} description={page.data.description}><Hero eyebrow={page.data.eyebrow} title={page.data.title} description={page.data.description} /><section class="section"><div class="container"><FeatureGrid features={page.data.features} /></div></section></Base>

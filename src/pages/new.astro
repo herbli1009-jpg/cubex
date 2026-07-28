@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content'; import Base from '../layouts/Base.astro'; import Hero from '../components/Hero.astro'; import ProductCard from '../components/ProductCard.astro';
+const products = (await getCollection('products')).sort((a,b) => b.data.launchDate.valueOf() - a.data.launchDate.valueOf());
+---
+<Base title="New Fitness Equipment | CUBEX"><Hero eyebrow="Latest Innovation" title="New." description="Newly launched, coming-soon and recently updated CUBEX products, automatically generated from the master product catalog." /><section class="section"><div class="container"><div class="filters"><button class="filter active" data-new-filter="All">All</button><button class="filter" data-new-filter="New">New</button><button class="filter" data-new-filter="Coming Soon">Coming Soon</button></div><div class="grid" id="new-grid">{products.map(product => <ProductCard {product} />)}</div></div></section><script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-new-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('.product-card');
+  buttons.forEach(button => button.addEventListener('click', () => {
+    buttons.forEach(item => item.classList.toggle('active', item === button));
+    cards.forEach(card => { card.hidden = Boolean(button.dataset.newFilter !== 'All' && card.querySelector('small')?.textContent?.split(' · ')[1] !== button.dataset.newFilter); });
+  }));
+</script></Base>

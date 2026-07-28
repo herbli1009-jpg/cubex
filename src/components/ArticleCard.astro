@@ -1,0 +1,4 @@
+---
+const { article } = Astro.props;
+---
+<article class="card"><img src={article.data.image} alt={article.data.title} loading="lazy" /><div class="card-body"><small>{article.data.category} · {article.data.readTime}</small><h3>{article.data.title}</h3><p>{article.data.excerpt}</p><br /><a class="btn" href={`/knowledge/${article.id}`}>Read Article</a></div></article>

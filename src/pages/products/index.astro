@@ -1,0 +1,9 @@
+---
+import { getCollection } from 'astro:content'; import Base from '../../layouts/Base.astro'; import Hero from '../../components/Hero.astro'; import ProductCard from '../../components/ProductCard.astro';
+const products = await getCollection('products'); const categories = ['All', ...new Set(products.map(p => p.data.category))];
+---
+<Base title="Fitness Equipment Products | CUBEX"><Hero eyebrow="Product Center" title="Products." description="Explore CUBEX strength, functional training, free-weight and commercial gym products. Each product can be customized for your brand and target market." /><section class="section"><div class="container"><div class="toolbar"><div class="filters">{categories.map((category, i) => <button class:list={['filter', i === 0 && 'active']} data-filter={category}>{category}</button>)}</div><input class="search" aria-label="Search products" placeholder="Search products..." /></div><div class="grid" id="product-grid">{products.map(product => <ProductCard {product} />)}</div></div></section><script>
+  const filters = document.querySelectorAll<HTMLButtonElement>('[data-filter]'); const search = document.querySelector<HTMLInputElement>('.search'); const cards = document.querySelectorAll<HTMLElement>('.product-card'); let active = 'All';
+  const render = () => { const q = search?.value.toLowerCase() || ''; cards.forEach(card => card.hidden = !((active === 'All' || card.dataset.category === active) && (card.dataset.search || '').includes(q))); };
+  filters.forEach(filter => filter.addEventListener('click', () => { active = filter.dataset.filter || 'All'; filters.forEach(item => item.classList.toggle('active', item === filter)); render(); })); search?.addEventListener('input', render);
+</script></Base>

@@ -1,0 +1,7 @@
+---
+import { navigation } from '../lib/site';
+---
+<header><div class="container nav"><a class="logo" href="/">CUBEX</a><button class="menu-toggle" aria-label="Toggle navigation">Menu</button><nav><ul>{navigation.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul></nav></div></header>
+<script>
+  document.querySelector('.menu-toggle')?.addEventListener('click', () => document.querySelector('header')?.classList.toggle('open'));
+</script>

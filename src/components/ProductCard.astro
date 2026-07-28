@@ -1,0 +1,4 @@
+---
+const { product } = Astro.props;
+---
+<article class="card product-card" data-category={product.data.category} data-search={`${product.data.name} ${product.data.description}`.toLowerCase()}><img src={product.data.image} alt={product.data.name} loading="lazy" /><div class="card-body"><small>{product.data.category} · {product.data.status}</small><h3>{product.data.name}</h3><p>{product.data.description}</p><br /><a class="btn" href={`/products/${product.id}`}>View Product</a></div></article>

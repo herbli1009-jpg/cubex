@@ -1,0 +1,4 @@
+---
+const { features } = Astro.props;
+---
+<div class="feature-grid">{features.map((feature: { title: string; description: string }, index: number) => <div class="feature"><small>{String(index + 1).padStart(2, '0')}</small><h3>{feature.title}</h3><p>{feature.description}</p></div>)}</div>

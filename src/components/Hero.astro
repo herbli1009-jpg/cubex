@@ -1,0 +1,4 @@
+---
+const { eyebrow, title, description, image, actions = [], home = false } = Astro.props;
+---
+<section class:list={[home ? 'hero' : 'page-hero']} style={home && image ? `--hero-image: url('${image}')` : undefined}><div class="container"><p class="eyebrow">{eyebrow}</p><h1>{title}</h1><p>{description}</p>{actions.length > 0 && <div class="actions">{actions.map((action: { href: string; label: string; primary?: boolean }) => <a class:list={['btn', action.primary && 'btn-primary']} href={action.href}>{action.label}</a>)}</div>}</div></section>

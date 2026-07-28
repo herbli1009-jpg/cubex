@@ -1,0 +1,4 @@
+---
+import Base from '../layouts/Base.astro'; import Hero from '../components/Hero.astro'; import { resources } from '../lib/site';
+---
+<Base title="Fitness Equipment Catalogs & Resources | CUBEX"><Hero eyebrow="Resources" title="Technical Downloads." description="Give purchasing teams, engineers and gym operators faster access to the documents they need." /><section class="section"><div class="container"><div class="resource-list">{resources.map(([category, title, description, cta]) => <article class="resource"><small>{category}</small><h3>{title}</h3><p>{description}</p><a class="btn" href={`/contact?resource=${encodeURIComponent(title)}`}>{cta}</a></article>)}</div></div></section></Base>
