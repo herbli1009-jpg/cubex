@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const inquirySchema = z.object({
-  name: z.string().trim().min(2).max(100), company: z.string().trim().max(120).optional().or(z.literal('')),
+  name: z.string().trim().min(1).max(100), company: z.string().trim().max(120).optional().or(z.literal('')),
   email: z.string().trim().email().max(254), country: z.string().trim().max(120).optional().or(z.literal('')),
   service: z.string().trim().min(2).max(120), priority: z.string().trim().min(2).max(120),
   details: z.string().trim().min(10).max(5000), source: z.enum(['contact', 'questionnaire', 'product', 'resource']),

@@ -109,6 +109,7 @@ type Products implements Node & Document {
   description: String
   specs: [ProductsSpecs]
   customization: String
+  body: JSON
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -146,6 +147,12 @@ input ProductsSpecsFilter {
   value: StringFilter
 }
 
+input RichTextFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+}
+
 input ProductsFilter {
   name: StringFilter
   category: StringFilter
@@ -157,6 +164,7 @@ input ProductsFilter {
   description: StringFilter
   specs: ProductsSpecsFilter
   customization: StringFilter
+  body: RichTextFilter
 }
 
 type ProductsConnectionEdges {
@@ -184,12 +192,6 @@ type Articles implements Node & Document {
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
-}
-
-input RichTextFilter {
-  startsWith: String
-  eq: String
-  exists: Boolean
 }
 
 input ArticlesFilter {
@@ -226,6 +228,7 @@ type Pages implements Node & Document {
   title: String
   description: String
   features: [PagesFeatures]
+  body: JSON
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -241,6 +244,7 @@ input PagesFilter {
   title: StringFilter
   description: StringFilter
   features: PagesFeaturesFilter
+  body: RichTextFilter
 }
 
 type PagesConnectionEdges {
@@ -297,6 +301,7 @@ input ProductsMutation {
   description: String
   specs: [ProductsSpecsMutation]
   customization: String
+  body: JSON
 }
 
 input ArticlesMutation {
@@ -322,6 +327,7 @@ input PagesMutation {
   title: String
   description: String
   features: [PagesFeaturesMutation]
+  body: JSON
 }
 
 schema {

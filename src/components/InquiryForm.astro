@@ -1,11 +1,56 @@
 ---
 const { source = 'contact' } = Astro.props;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
-<form id="lead-form"><input type="hidden" name="source" value={source} /><input class="honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" /><div class="field"><label for="name">Name</label><input id="name" required name="name" maxlength="100" /></div><div class="field"><label for="company">Company</label><input id="company" name="company" maxlength="120" /></div><div class="field"><label for="email">Email</label><input id="email" required type="email" name="email" /></div><div class="field"><label for="country">Country / Region</label><input id="country" name="country" maxlength="120" /></div><div class="field full"><label for="service">What do you need?</label><select id="service" name="service"><option>Buy Products</option><option>Develop A New Product</option><option>China Sourcing & Procurement Agency</option><option>Quality Control Support</option><option>Not Sure - Need Advice</option></select></div><div class="field full"><label for="priority">Primary Priority</label><select id="priority" name="priority"><option>Product quality</option><option>Total cost reduction</option><option>Faster development</option><option>Delivery reliability</option><option>Supplier management</option></select></div><div class="field full"><label for="details">Project Details</label><textarea id="details" required name="details" minlength="10" maxlength="5000" placeholder="Products, quantities, current challenges, target market and expected timing."></textarea></div><div class="field full"><button class="btn btn-primary" type="submit">Submit Inquiry</button><p class="form-note" aria-live="polite"></p></div></form>
+<form id="lead-form" novalidate>
+  <input type="hidden" name="source" value={source} />
+  <input name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" hidden />
+  <div class="field"><label for="name">Name</label><input id="name" required name="name" minlength="1" maxlength="100" aria-describedby="name-error" /><p class="field-error" id="name-error" data-error-for="name" aria-live="polite"></p></div>
+  <div class="field"><label for="company">Company</label><input id="company" name="company" maxlength="120" aria-describedby="company-error" /><p class="field-error" id="company-error" data-error-for="company" aria-live="polite"></p></div>
+  <div class="field"><label for="email">Email</label><input id="email" required type="email" name="email" maxlength="254" aria-describedby="email-error" /><p class="field-error" id="email-error" data-error-for="email" aria-live="polite"></p></div>
+  <div class="field"><label for="country">Country / Region</label><input id="country" name="country" maxlength="120" aria-describedby="country-error" /><p class="field-error" id="country-error" data-error-for="country" aria-live="polite"></p></div>
+  <div class="field full"><label for="service">What do you need?</label><select id="service" name="service"><option>Buy Products</option><option>Develop A New Product</option><option>China Sourcing & Procurement Agency</option><option>Quality Control Support</option><option>Not Sure - Need Advice</option></select></div>
+  <div class="field full"><label for="priority">Primary Priority</label><select id="priority" name="priority"><option>Product quality</option><option>Total cost reduction</option><option>Faster development</option><option>Delivery reliability</option><option>Supplier management</option></select></div>
+  <div class="field full"><label for="details">Project Details</label><textarea id="details" required name="details" minlength="10" maxlength="5000" placeholder="Products, quantities, current challenges, target market and expected timing." aria-describedby="details-error"></textarea><p class="field-error" id="details-error" data-error-for="details" aria-live="polite"></p></div>
+  {turnstileSiteKey && <div class="field full"><div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div><p class="field-error" id="turnstile-error" aria-live="polite"></p></div>}
+  <div class="field full"><button class="btn btn-primary" type="submit">Submit Inquiry</button><p class="form-note" aria-live="polite"></p></div>
+</form>
+<dialog id="inquiry-success" class="success-dialog" aria-labelledby="success-title"><div><p class="success-kicker">Inquiry received</p><h2 id="success-title">Thank you for contacting CUBEX.</h2><p>Our team will review your requirements and get in touch with you soon.</p><button class="btn btn-primary" type="button" id="success-close">Close</button></div></dialog>
+{turnstileSiteKey && <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+<style>
+  .field-error { min-height: 1.5em; color: #f4a0a0; font-size: .83rem; line-height: 1.4; }
+  input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #f4a0a0; }
+  .success-dialog { width: min(92vw, 540px); padding: 0; border: 1px solid rgba(255,255,255,.18); background: #121212; color: #f5f5f5; }
+  .success-dialog::backdrop { background: rgba(0,0,0,.74); }
+  .success-dialog > div { padding: 34px; }
+  .success-dialog h2 { margin: 8px 0 14px; font-size: 1.8rem; line-height: 1.15; }
+  .success-dialog p { color: #c7c7c7; margin-bottom: 24px; }
+  .success-dialog .success-kicker { margin: 0; color: #aaa; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+</style>
 <script>
-  const form = document.querySelector<HTMLFormElement>('#lead-form'); const params = new URLSearchParams(location.search); const product = params.get('product'); const resource = params.get('resource'); const answers = sessionStorage.getItem('cubexQuestionnaire'); const note = form?.querySelector<HTMLElement>('.form-note');
+  const form = document.querySelector<HTMLFormElement>('#lead-form');
+  const params = new URLSearchParams(location.search); const product = params.get('product'); const resource = params.get('resource'); const answers = sessionStorage.getItem('cubexQuestionnaire'); const note = form?.querySelector<HTMLElement>('.form-note');
+  const errorFor = (name: string) => form?.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+  const turnstileError = form?.querySelector<HTMLElement>('#turnstile-error');
+  const successDialog = document.querySelector<HTMLDialogElement>('#inquiry-success');
+  const setError = (name: string, message = '') => { const field = form?.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null; const error = errorFor(name); if (field) field.setAttribute('aria-invalid', message ? 'true' : 'false'); if (error) error.textContent = message; };
+  const validate = (field: HTMLInputElement | HTMLTextAreaElement) => {
+    const value = field.value.trim(); let message = '';
+    if (field.name === 'name' && !value) message = 'Please enter your name.';
+    else if (field.name === 'email' && !value) message = 'Please enter your email address.';
+    else if (field.name === 'email' && !field.validity.valid) message = 'Please enter a valid email address.';
+    else if (field.name === 'details' && value.length < 10) message = 'Please provide at least 10 characters about your project.';
+    else if (field.validity.tooLong) message = `Please use no more than ${field.maxLength} characters.`;
+    setError(field.name, message); return !message;
+  };
   if (product) { const details = form?.elements.namedItem('details') as HTMLTextAreaElement; if (details) details.value = `I am interested in: ${product}\n`; }
   if (resource) { const details = form?.elements.namedItem('details') as HTMLTextAreaElement; if (details) details.value = `I would like to request: ${resource}\n`; }
   if (answers) { const details = form?.elements.namedItem('details') as HTMLTextAreaElement; if (details) details.value = `Questionnaire Summary:\n${Object.entries(JSON.parse(answers)).map(([key, value]) => `${key}: ${value}`).join('\n')}\n\nAdditional Notes:\n`; }
-  form?.addEventListener('submit', async event => { event.preventDefault(); if (!form || !note) return; const data = Object.fromEntries(new FormData(form)); const payload = { ...data, product: product || undefined, resource: resource || undefined, questionnaire: answers ? JSON.parse(answers) : undefined, honeypot: data.website || undefined, turnstileToken: (window as any).turnstile?.getResponse?.() || undefined }; note.className = 'form-note'; note.textContent = 'Sending inquiry...'; try { const response = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const result = await response.json(); if (!response.ok) throw new Error(result.message || 'Unable to send your inquiry.'); note.textContent = `Thank you. Your inquiry reference is ${result.id}.`; form.reset(); sessionStorage.removeItem('cubexQuestionnaire'); } catch (error) { note.className = 'form-note error'; note.textContent = error instanceof Error ? error.message : 'Unable to send your inquiry.'; } });
+  const formFields = form ? [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[name="name"], input[name="email"], textarea[name="details"], input[name="company"], input[name="country"]')] : [];
+  formFields.forEach(field => { field.addEventListener('input', () => validate(field)); field.addEventListener('blur', () => validate(field)); });
+  form?.addEventListener('submit', async event => { event.preventDefault(); if (!form || !note) return; if (!formFields.map(validate).every(Boolean)) { form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(); return; }
+    const data = Object.fromEntries(new FormData(form)); const turnstileToken = String(data['cf-turnstile-response'] || ''); if (turnstileError) turnstileError.textContent = turnstileToken ? '' : 'Please complete the security check.'; if (!turnstileToken && form.querySelector('.cf-turnstile')) return; const payload = { ...data, product: product || undefined, resource: resource || undefined, questionnaire: answers ? JSON.parse(answers) : undefined, honeypot: data.website || undefined, turnstileToken: turnstileToken || undefined }; note.className = 'form-note'; note.textContent = 'Sending inquiry...';
+    try { const response = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const result = await response.json(); if (!response.ok) { if (result.errors) Object.entries(result.errors).forEach(([field, message]) => setError(field, String(message))); throw new Error(result.message || 'Unable to send your inquiry.'); } note.textContent = ''; form.reset(); sessionStorage.removeItem('cubexQuestionnaire'); successDialog?.showModal(); } catch (error) { note.className = 'form-note error'; note.textContent = error instanceof Error ? error.message : 'Unable to send your inquiry.'; }
+  });
+  document.querySelector<HTMLButtonElement>('#success-close')?.addEventListener('click', () => successDialog?.close());
 </script>

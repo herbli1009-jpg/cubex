@@ -1,4 +1,19 @@
 import type { APIRoute } from 'astro';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'; import { getSignedUrl } from '@aws-sdk/s3-request-presigner'; import { z } from 'zod';
-const mediaSchema = z.object({ filename: z.string().regex(/^[a-zA-Z0-9._/-]+$/).max(240), contentType: z.string().regex(/^(image\/|application\/pdf)/).max(100) });
-export const POST: APIRoute = async ({ request }) => { if (!import.meta.env.R2_ACCOUNT_ID || !import.meta.env.R2_ACCESS_KEY_ID || !import.meta.env.R2_SECRET_ACCESS_KEY || !import.meta.env.R2_BUCKET) return new Response(JSON.stringify({ message: 'R2 is not configured.' }), { status: 503 }); const parsed = mediaSchema.safeParse(await request.json()); if (!parsed.success) return new Response(JSON.stringify({ message: 'Invalid file.' }), { status: 400 }); const key = `uploads/${crypto.randomUUID()}-${parsed.data.filename.split('/').pop()}`; const client = new S3Client({ region: 'auto', endpoint: `https://${import.meta.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`, credentials: { accessKeyId: import.meta.env.R2_ACCESS_KEY_ID, secretAccessKey: import.meta.env.R2_SECRET_ACCESS_KEY } }); const uploadUrl = await getSignedUrl(client, new PutObjectCommand({ Bucket: import.meta.env.R2_BUCKET, Key: key, ContentType: parsed.data.contentType }), { expiresIn: 300 }); return new Response(JSON.stringify({ key, uploadUrl, url: `${import.meta.env.PUBLIC_MEDIA_URL}/${key}` }), { headers: { 'Content-Type': 'application/json' } }); };
+import { z } from 'zod';
+import { createUpload, getR2MediaConfig } from '../../../../lib/r2-media';
+
+const mediaSchema = z.object({
+  directory: z.string().max(400).optional(),
+  filename: z.string().min(1).max(240),
+  contentType: z.string().min(1).max(100),
+});
+
+export const POST: APIRoute = async ({ request }) => {
+  const parsed = mediaSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return Response.json({ message: 'Invalid file.' }, { status: 400 });
+  try {
+    return Response.json(await createUpload(getR2MediaConfig(import.meta.env), parsed.data));
+  } catch (error) {
+    return Response.json({ message: error instanceof Error ? error.message : 'Unable to create upload.' }, { status: 400 });
+  }
+};

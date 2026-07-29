@@ -1,0 +1,9 @@
+---
+import { getAdminSessionUserId } from '../../../lib/admin-auth';
+export const prerender = false;
+if (getAdminSessionUserId(Astro.cookies, import.meta.env)) return Astro.redirect('/admin/inquiries');
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><title>Inquiry Admin | CUBEX</title><meta name="robots" content="noindex,nofollow" /><link rel="stylesheet" href="/admin.css" /></head><body class="admin-login"><main class="login-panel"><p class="admin-kicker">CUBEX</p><h1>Inquiry Admin</h1><form id="login-form" class="login-form"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required autofocus /><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required /><button type="submit">Sign in</button><p id="login-note" role="alert"></p></form></main><script>
+const form = document.querySelector<HTMLFormElement>('#login-form'); const note = document.querySelector<HTMLElement>('#login-note');
+if (form && note) form.addEventListener('submit', async (event) => { event.preventDefault(); const values = new FormData(form); note.textContent = 'Signing in...'; const response = await fetch('/api/admin/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: values.get('email'), password: values.get('password') }) }); if (response.ok) location.assign('/admin/inquiries'); else { const body = await response.json().catch(() => ({})); note.textContent = body.message || 'Unable to sign in.'; } });
+</script></body></html>

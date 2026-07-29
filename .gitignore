@@ -6,3 +6,5 @@ public/admin/
 .env
 .env.*
 !.env.example
+tina-media-assets.json
+tina-media-migration-map.json

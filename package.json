@@ -8,7 +8,9 @@
     "build": "tinacms build && astro build",
     "check": "astro check",
     "preview": "astro preview",
-    "tina": "tinacms dev -c \"astro dev\""
+    "tina": "tinacms dev -c \"astro dev\"",
+    "r2:configure-cors": "node --env-file=.env scripts/configure-r2-media-cors.mjs",
+    "r2:migrate-tina-media": "node --env-file=.env scripts/migrate-tina-media.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.0.0",
