@@ -2,7 +2,7 @@
 name: 测试产品3
 category: ' hyrox'
 status: published
-featured: true
+featured: false
 description: ddsdf
 specs:
   - {}
