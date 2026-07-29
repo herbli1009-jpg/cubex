@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "tinacms build --skip-cloud-checks && astro build",
+    "build": "tinacms build --skip-cloud-checks --skip-search-index && astro build",
     "check": "astro check",
     "preview": "astro preview",
     "tina": "tinacms dev -c \"astro dev\"",

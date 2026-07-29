@@ -1,16 +1,15 @@
 import { defineConfig } from 'tinacms';
 
 const text = (name: string, label = name) => ({ type: 'string' as const, name, label });
+const search = process.env.TINA_SEARCH_TOKEN
+  ? { tina: { indexerToken: process.env.TINA_SEARCH_TOKEN, stopwordLanguages: ['eng'] } }
+  : undefined;
+
 export default defineConfig({
   branch: process.env.VERCEL_GIT_COMMIT_REF || 'main',
   clientId: process.env.TINA_CLIENT_ID || '', token: process.env.TINA_TOKEN || '',
   build: { outputFolder: 'admin', publicFolder: 'public' },
-  search: {
-    tina: {
-      indexerToken: process.env.TINA_SEARCH_TOKEN || '',
-      stopwordLanguages: ['eng'],
-    },
-  },
+  search,
   media: { loadCustomStore: async () => (await import('./r2-media-store')).R2MediaStore },
   schema: { collections: [
     { name: 'products', label: 'Products', path: 'src/content/products', format: 'md', fields: [text('name'), text('category'), text('status'), { type:'datetime', name:'launchDate', label:'Launch date' }, { type:'datetime', name:'updatedDate', label:'Updated date' }, { type:'boolean', name:'featured', label:'Featured' }, { type:'image', name:'image', label:'Main image' }, { type:'string', name:'description', label:'Description', ui:{component:'textarea'} }, { type:'object', name:'specs', label:'Specifications', list:true, fields:[text('label'),text('value')] }, { type:'string', name:'customization', label:'Customization', ui:{component:'textarea'} }, { type:'rich-text', name:'body', label:'Body', isBody:true }] },
