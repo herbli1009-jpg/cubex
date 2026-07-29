@@ -6,7 +6,7 @@ import { getAdminClient } from '../../../../lib/admin-users';
 const schema = z.object({ status: z.enum(['new', 'in_progress', 'closed', 'spam']) });
 
 export const PATCH: APIRoute = async ({ request, params, cookies }) => {
-  if (!getAdminSessionUserId(cookies, import.meta.env)) return Response.json({ message: 'Unauthorized.' }, { status: 401 });
+  if (!await getAdminSessionUserId(cookies, import.meta.env)) return Response.json({ message: 'Unauthorized.' }, { status: 401 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success || !params.id) return Response.json({ message: 'Invalid inquiry status.' }, { status: 400 });
   if (!import.meta.env.SUPABASE_URL || !import.meta.env.SUPABASE_SERVICE_ROLE_KEY) return Response.json({ message: 'Supabase is not configured.' }, { status: 500 });

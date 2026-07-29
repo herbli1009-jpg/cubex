@@ -2,7 +2,7 @@
 import { getAdminSessionUserId } from '../../../lib/admin-auth';
 import { getAdminClient } from '../../../lib/admin-users';
 export const prerender = false;
-if (!getAdminSessionUserId(Astro.cookies, import.meta.env)) return Astro.redirect('/admin/inquiries/login');
+if (!await getAdminSessionUserId(Astro.cookies, import.meta.env)) return Astro.redirect('/admin/inquiries/login');
 if (!import.meta.env.SUPABASE_URL || !import.meta.env.SUPABASE_SERVICE_ROLE_KEY) return new Response('Supabase is not configured.', { status: 500 });
 const supabase = getAdminClient(import.meta.env);
 const { data: inquiries, error } = await supabase.from('inquiries').select('id,name,company,email,country,service,priority,details,source,product,resource,questionnaire,status,created_at,handled_at').order('created_at', { ascending: false }).limit(200);

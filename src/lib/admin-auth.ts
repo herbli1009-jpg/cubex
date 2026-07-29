@@ -1,21 +1,20 @@
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import type { AstroCookies } from 'astro';
+import { getAdminClient } from './admin-users';
 
 const SESSION_NAME = 'cubex_inquiry_admin';
-const digest = (value: string) => createHash('sha256').update(value).digest();
-const signature = (userId: string, secret: string) => createHmac('sha256', secret).update(userId).digest('base64url');
 
-export const canUseAdmin = (env: ImportMetaEnv) => Boolean(env.ADMIN_SESSION_SECRET);
+export const canUseAdmin = (env: ImportMetaEnv) => Boolean(env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY);
 
-export const getAdminSessionUserId = (cookies: AstroCookies, env: ImportMetaEnv) => {
+export const getAdminSessionUserId = async (cookies: AstroCookies, env: ImportMetaEnv) => {
   if (!canUseAdmin(env)) return null;
-  const [userId, tokenSignature] = (cookies.get(SESSION_NAME)?.value || '').split('.');
-  if (!userId || !tokenSignature) return null;
-  return timingSafeEqual(digest(tokenSignature), digest(signature(userId, env.ADMIN_SESSION_SECRET))) ? userId : null;
+  const accessToken = cookies.get(SESSION_NAME)?.value;
+  if (!accessToken) return null;
+  const { data, error } = await getAdminClient(env).auth.getUser(accessToken);
+  return error || !data.user ? null : data.user.id;
 };
 
-export const setAdminSession = (cookies: AstroCookies, userId: string, env: ImportMetaEnv) => {
-  cookies.set(SESSION_NAME, `${userId}.${signature(userId, env.ADMIN_SESSION_SECRET)}`, {
+export const setAdminSession = (cookies: AstroCookies, accessToken: string) => {
+  cookies.set(SESSION_NAME, accessToken, {
     httpOnly: true, sameSite: 'strict', secure: import.meta.env.PROD, path: '/', maxAge: 60 * 60 * 12,
   });
 };

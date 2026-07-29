@@ -16,7 +16,7 @@ Astro SSR site deployed to Vercel, with Git-backed TinaCMS content, Supabase inq
 4. Configure Tina Cloud with the GitHub repository and set `TINA_CLIENT_ID` and `TINA_TOKEN` in Vercel. Limit its GitHub app access to internal editors.
 5. Configure Vercel Deployment Protection for `/api/admin/*` or place it behind your SSO. The R2 presign endpoint must not be exposed publicly.
 6. Configure the SMTP sender domain and set `INQUIRY_RECIPIENT` to the sales inbox. When enabling Cloudflare Turnstile, set both `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` from the same widget before production.
-7. Create users in Supabase Authentication and set a long random `ADMIN_SESSION_SECRET`. Any Supabase Auth user can then sign in at `/admin/inquiries`.
+7. Create users in Supabase Authentication. Any Supabase Auth user can then sign in at `/admin/inquiries`.
 
 ## Content and media
 
