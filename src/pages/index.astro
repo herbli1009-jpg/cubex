@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content'; import Base from '../layouts/Base.astro'; import Hero from '../components/Hero.astro'; import ProductCard from '../components/ProductCard.astro'; import ArticleCard from '../components/ArticleCard.astro'; import FeatureGrid from '../components/FeatureGrid.astro';
-const products = (await getCollection('products')).filter(p => p.data.featured || p.data.status === 'New').slice(0, 3);
+const products = (await getCollection('products'))
+  .filter(p => p.data.featured || p.data.status === 'New')
+  .sort((a, b) => b.data.updatedDate.valueOf() - a.data.updatedDate.valueOf());
 const articles = (await getCollection('articles')).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const features = [{title:'Product Engineering',description:'Concept definition, structural design, DFM, cost engineering, prototypes and production launch.'},{title:'Quality Control',description:'Supplier qualification, IQC, IPQC, functional testing, packaging inspection and corrective actions.'},{title:'China Sourcing',description:'Supplier development, negotiation, cost reduction, order control and multi-factory coordination.'},{title:'Knowledge & Resources',description:'Buying guides, engineering insights, quality methods, catalogs, manuals and technical downloads.'}];
 ---
