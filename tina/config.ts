@@ -9,6 +9,7 @@ export default defineConfig({
   branch: process.env.VERCEL_GIT_COMMIT_REF || 'main',
   clientId: process.env.TINA_CLIENT_ID || '', token: process.env.TINA_TOKEN || '',
   build: { outputFolder: 'admin', publicFolder: 'public' },
+  media: { tina: { mediaRoot: 'uploads', publicFolder: 'public' } },
   search,
   schema: { collections: [
     { name: 'products', label: 'Products', path: 'src/content/products', format: 'md', defaultItem:()=>{const now=new Date().toISOString();return {launchDate:now,updatedDate:now,featured:false,specs:[]};}, fields: [text('name'), text('category'), text('status'), { type:'datetime', name:'launchDate', label:'Launch date' }, { type:'datetime', name:'updatedDate', label:'Updated date' }, { type:'boolean', name:'featured', label:'Featured' }, { type:'image', name:'image', label:'Main image' }, { type:'string', name:'description', label:'Description', ui:{component:'textarea'} }, { type:'object', name:'specs', label:'Specifications', list:true, ui:{defaultItem:{label:'Specification',value:'To be confirmed'}}, fields:[text('label','Label'),text('value','Value')] }, { type:'string', name:'customization', label:'Customization', ui:{component:'textarea'} }, { type:'rich-text', name:'body', label:'Body', isBody:true }] },
