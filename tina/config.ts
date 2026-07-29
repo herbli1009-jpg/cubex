@@ -2,7 +2,7 @@ import { defineConfig } from 'tinacms';
 
 const text = (name: string, label = name) => ({ type: 'string' as const, name, label });
 export default defineConfig({
-  branch: process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || 'main',
+  branch: process.env.VERCEL_GIT_COMMIT_REF || 'main',
   clientId: process.env.TINA_CLIENT_ID || '', token: process.env.TINA_TOKEN || '',
   build: { outputFolder: 'admin', publicFolder: 'public' },
   media: { tina: { mediaRoot: '', publicFolder: 'public' } },
