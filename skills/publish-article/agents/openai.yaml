@@ -1,0 +1,4 @@
+interface:
+  display_name: "发布 CUBEX 网站文章"
+  short_description: "创建、校验、提交并推送一篇 CUBEX 网站文章内容"
+  default_prompt: "使用 $publish-article 为 CUBEX 添加文章，并在校验通过后推送。"

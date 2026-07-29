@@ -1,12 +1,19 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const defaultProductImage = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1400&q=85';
+
 const products = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/products' }),
   schema: z.object({
-    name: z.string(), category: z.string(), status: z.string(), launchDate: z.coerce.date(), updatedDate: z.coerce.date(),
-    featured: z.boolean().default(false), image: z.string(), description: z.string(),
-    specs: z.array(z.object({ label: z.string(), value: z.string() })), customization: z.string(),
+    name: z.string(), category: z.string(), status: z.string(),
+    launchDate: z.coerce.date().catch(() => new Date()),
+    updatedDate: z.coerce.date().catch(() => new Date()),
+    featured: z.boolean().default(false),
+    image: z.string().trim().min(1).catch(defaultProductImage),
+    description: z.string(),
+    specs: z.array(z.object({ label: z.string(), value: z.string() })).catch([]),
+    customization: z.string(),
   }),
 });
 const articles = defineCollection({

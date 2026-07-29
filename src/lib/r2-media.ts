@@ -35,6 +35,7 @@ export function createR2Client(config: R2MediaConfig) {
   return new S3Client({
     region: 'auto',
     endpoint: `https://${config.accountId}.r2.cloudflarestorage.com`,
+    forcePathStyle: true,
     credentials: { accessKeyId: config.accessKeyId, secretAccessKey: config.secretAccessKey },
   });
 }
