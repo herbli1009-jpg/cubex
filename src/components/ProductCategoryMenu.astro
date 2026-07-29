@@ -1,0 +1,7 @@
+---
+import type { Category } from '../lib/content-taxonomy';
+import ProductCategoryMenu from './ProductCategoryMenu.astro';
+
+const { categories } = Astro.props as { categories: Category[] };
+---
+<ul>{categories.map((category) => <li><a href={category.url}>{category.label}</a>{category.children.length > 0 && <ProductCategoryMenu categories={category.children} />}</li>)}</ul>

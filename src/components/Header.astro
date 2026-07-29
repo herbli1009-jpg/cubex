@@ -1,7 +1,16 @@
 ---
+import { getCollection } from 'astro:content';
 import { navigation } from '../lib/site';
+import { buildCategoryTree } from '../lib/content-taxonomy';
+import ProductCategoryMenu from './ProductCategoryMenu.astro';
+
+const productCategories = buildCategoryTree('products', await getCollection('products'));
 ---
-<header><div class="container nav"><a class="logo" href="/">CUBEX</a><button class="menu-toggle" aria-label="Toggle navigation">Menu</button><nav><ul>{navigation.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul></nav></div></header>
+<header><div class="container nav"><a class="logo" href="/">CUBEX</a><button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button><nav><ul>{navigation.map(([label, href]) => label === 'Products' ? <li class="nav-products"><a href={href} aria-haspopup="true">{label}</a><div class="product-menu"><a class="product-menu-all" href="/products">All Products</a><ProductCategoryMenu categories={productCategories} /></div></li> : <li><a href={href}>{label}</a></li>)}</ul></nav></div></header>
 <script>
-  document.querySelector('.menu-toggle')?.addEventListener('click', () => document.querySelector('header')?.classList.toggle('open'));
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  toggle?.addEventListener('click', () => {
+    const isOpen = document.querySelector('header')?.classList.toggle('open') ?? false;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
 </script>

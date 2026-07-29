@@ -1,4 +1,6 @@
 ---
+import { categoryLabel } from '../lib/content-taxonomy';
 const { article } = Astro.props;
+const category = categoryLabel(article.id.split('/').slice(0, -1).join('/'));
 ---
-<article class="card"><img src={article.data.image} alt={article.data.title} loading="lazy" /><div class="card-body"><small>{article.data.category} · {article.data.readTime}</small><h3>{article.data.title}</h3><p>{article.data.excerpt}</p><br /><a class="btn" href={`/knowledge/${article.id}`}>Read Article</a></div></article>
+<article class="card"><img src={article.data.image} alt={article.data.title} loading="lazy" /><div class="card-body"><small>{category} · {article.data.readTime}</small><h3>{article.data.title}</h3><p>{article.data.excerpt}</p><br /><a class="btn" href={`/knowledge/${article.id.split('/').at(-1)}`}>Read Article</a></div></article>

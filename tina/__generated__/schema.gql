@@ -100,7 +100,6 @@ type ProductsSpecs {
 
 type Products implements Node & Document {
   name: String
-  category: String
   status: String
   launchDate: String
   updatedDate: String
@@ -155,7 +154,6 @@ input RichTextFilter {
 
 input ProductsFilter {
   name: StringFilter
-  category: StringFilter
   status: StringFilter
   launchDate: DatetimeFilter
   updatedDate: DatetimeFilter
@@ -180,7 +178,6 @@ type ProductsConnection implements Connection {
 
 type Articles implements Node & Document {
   title: String
-  category: String
   date: String
   readTime: String
   image: String
@@ -196,7 +193,6 @@ type Articles implements Node & Document {
 
 input ArticlesFilter {
   title: StringFilter
-  category: StringFilter
   date: DatetimeFilter
   readTime: StringFilter
   image: ImageFilter
@@ -292,7 +288,6 @@ input ProductsSpecsMutation {
 
 input ProductsMutation {
   name: String
-  category: String
   status: String
   launchDate: String
   updatedDate: String
@@ -306,7 +301,6 @@ input ProductsMutation {
 
 input ArticlesMutation {
   title: String
-  category: String
   date: String
   readTime: String
   image: String

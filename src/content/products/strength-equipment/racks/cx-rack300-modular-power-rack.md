@@ -1,6 +1,5 @@
 ---
 name: CX-RACK300 Modular Power Rack
-category: Strength
 status: New
 launchDate: 2026-07-12
 updatedDate: 2026-07-25

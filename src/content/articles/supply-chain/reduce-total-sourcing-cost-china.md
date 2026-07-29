@@ -1,6 +1,5 @@
 ---
 title: How to Reduce Total Sourcing Cost - Not Just Unit Price
-category: Supply Chain
 date: 2026-07-18
 readTime: 6 min read
 image: https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1400&q=85

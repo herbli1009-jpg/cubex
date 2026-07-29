@@ -1,6 +1,5 @@
 ---
 name: CX-PLATE50 Bumper Plate
-category: Free Weight
 status: Available
 launchDate: 2026-03-12
 updatedDate: 2026-07-10

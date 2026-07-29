@@ -1,0 +1,4 @@
+interface:
+  display_name: "发布 CUBEX 网站内容"
+  short_description: "创建、校验、提交并推送 CUBEX 产品与文章内容"
+  default_prompt: "使用 $publish-content 创建或更新 CUBEX 产品或文章，并在校验通过后推送。"

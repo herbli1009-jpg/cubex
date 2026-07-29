@@ -1,6 +1,5 @@
 ---
 title: A Practical Quality Control System for Fitness Equipment
-category: Quality
 date: 2026-07-28
 readTime: 6 min read
 image: https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1400&q=85

@@ -1,6 +1,5 @@
 ---
 name: CX-FT100 Functional Trainer
-category: Strength
 status: New
 launchDate: 2026-07-20
 updatedDate: 2026-07-26

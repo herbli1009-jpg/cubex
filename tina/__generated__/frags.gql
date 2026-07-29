@@ -1,0 +1,43 @@
+fragment ProductsParts on Products {
+  __typename
+  name
+  status
+  launchDate
+  updatedDate
+  featured
+  image
+  description
+  specs {
+    __typename
+    label
+    value
+  }
+  customization
+  body
+}
+
+fragment ArticlesParts on Articles {
+  __typename
+  title
+  date
+  readTime
+  image
+  excerpt
+  keywords
+  seoTitle
+  seoDescription
+  body
+}
+
+fragment PagesParts on Pages {
+  __typename
+  eyebrow
+  title
+  description
+  features {
+    __typename
+    title
+    description
+  }
+  body
+}

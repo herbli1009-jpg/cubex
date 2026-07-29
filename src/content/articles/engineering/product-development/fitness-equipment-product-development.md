@@ -1,6 +1,5 @@
 ---
 title: "From Concept to Mass Production: Fitness Equipment Development"
-category: Engineering
 date: 2026-07-24
 readTime: 7 min read
 image: https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=1400&q=85

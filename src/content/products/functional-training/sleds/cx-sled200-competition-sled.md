@@ -1,6 +1,5 @@
 ---
 name: CX-SLED200 Competition Sled
-category: Functional
 status: Coming Soon
 launchDate: 2026-09-01
 updatedDate: 2026-07-24

@@ -1,6 +1,5 @@
 ---
 name: 测试产品
-category: ' hyrox'
 status: published
 launchDate: 2026-07-29
 updatedDate: 2026-07-29

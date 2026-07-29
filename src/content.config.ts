@@ -6,7 +6,7 @@ const defaultProductImage = 'https://images.unsplash.com/photo-1534438327276-14e
 const products = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/products' }),
   schema: z.object({
-    name: z.string(), category: z.string(), status: z.string(),
+    name: z.string(), status: z.string(),
     launchDate: z.coerce.date().catch(() => new Date()),
     updatedDate: z.coerce.date().catch(() => new Date()),
     featured: z.boolean().default(false),
@@ -19,7 +19,7 @@ const products = defineCollection({
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
   schema: z.object({
-    title: z.string(), category: z.string(), date: z.coerce.date(), readTime: z.string(), image: z.string(),
+    title: z.string(), date: z.coerce.date(), readTime: z.string(), image: z.string(),
     excerpt: z.string(), keywords: z.array(z.string()), seoTitle: z.string().optional(), seoDescription: z.string().optional(),
   }),
 });
