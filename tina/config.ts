@@ -11,8 +11,8 @@ export default defineConfig({
   build: { outputFolder: 'admin', publicFolder: 'public' },
   media: {
     loadCustomStore: async () => {
-      const { R2MediaStore } = await import('./r2-media-store');
-      return R2MediaStore;
+      const { TinaCloudOriginalMediaStore } = await import('./tina-cloud-original-media-store');
+      return TinaCloudOriginalMediaStore;
     },
   },
   search,
