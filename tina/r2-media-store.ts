@@ -2,6 +2,7 @@ import type { Media, MediaList, MediaListOptions, MediaStore, MediaUploadOptions
 
 type MediaResponse = { items: Media[]; nextOffset?: string };
 type UploadResponse = { key: string; uploadUrl: string; url: string };
+const thumbnailSizes = ['75x75', '400x400', '1000x1000'];
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, init);
@@ -39,7 +40,16 @@ export class R2MediaStore implements MediaStore {
     if (options.offset) params.set('offset', String(options.offset));
     if (options.limit) params.set('limit', String(options.limit));
     if (options.filesOnly) params.set('filesOnly', 'true');
-    return request<MediaResponse>(`/api/admin/media/list?${params}`);
+    const response = await request<MediaResponse>(`/api/admin/media/list?${params}`);
+    return {
+      ...response,
+      items: response.items.map((media) => {
+        const src = media.src;
+        return media.type === 'file' && src
+          ? { ...media, thumbnails: Object.fromEntries(thumbnailSizes.map((size) => [size, src])) as Record<string, string> }
+          : media;
+      }),
+    };
   }
 
   async delete(media: Media): Promise<void> {
