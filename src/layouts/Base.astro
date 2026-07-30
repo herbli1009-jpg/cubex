@@ -14,4 +14,4 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
   {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}{publishedTime && <meta property="article:published_time" content={publishedTime} />}
   {image && <meta property="og:image" content={image} />}{noindex && <meta name="robots" content="noindex,nofollow" />}
   <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: site.name, description: site.description, email: site.email, url: site.url })} />
-</head><body><Header /><main><slot /></main><Footer /></body></html>
+</head><body><Header /><main><slot /></main><Footer /><a class="contact-float" href="/contact" aria-label="Contact CUBEX" title="Contact CUBEX"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg></a></body></html>

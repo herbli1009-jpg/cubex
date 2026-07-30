@@ -1,5 +1,5 @@
 ---
-import { getEntry, render } from 'astro:content'; import Base from '../layouts/Base.astro'; import Hero from '../components/Hero.astro'; import FeatureGrid from '../components/FeatureGrid.astro'; import CopyMarkdown from '../components/CopyMarkdown.astro';
+import { getEntry, render } from 'astro:content'; import Base from '../layouts/Base.astro'; import Hero from '../components/Hero.astro'; import FeatureGrid from '../components/FeatureGrid.astro';
 const page = await getEntry('pages', Astro.params.service!); if (!page) return new Response(null, { status: 404 }); const { Content } = await render(page);
 ---
-<Base title={`${page.data.title} | CUBEX`} description={page.data.description}><Hero eyebrow={page.data.eyebrow} title={page.data.title} description={page.data.description} /><section class="section"><div class="container"><FeatureGrid features={page.data.features} /><article class="detail service-body"><Content /><CopyMarkdown markdown={page.body || ''} /></article></div></section></Base>
+<Base title={`${page.data.title} | CUBEX`} description={page.data.description}><Hero eyebrow={page.data.eyebrow} title={page.data.title} description={page.data.description} /><section class="section"><div class="container"><FeatureGrid features={page.data.features} /><article class="detail service-body"><Content /></article></div></section></Base>
